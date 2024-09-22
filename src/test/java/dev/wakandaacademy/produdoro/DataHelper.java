@@ -15,6 +15,8 @@ public class DataHelper {
 
     private static final UUID usuario1 = UUID.fromString("a713162f-20a9-4db9-a85b-90cd51ab18f4");
 
+    private static final UUID usuarioFOCO = UUID.fromString("a713162f-20a9-4db9-a85b-90cd51ab18f2");
+
     public static Usuario createUsuario() {
         return Usuario.builder().email("email@email.com").status(StatusUsuario.PAUSA_LONGA).idUsuario(usuario1).build();
     }
@@ -52,5 +54,14 @@ public class DataHelper {
                 Tarefa.builder().build()
 
         );
+    }
+
+    public static Usuario createUsuarioFOCO() {
+        return Usuario.builder().email("email@email.com").status(StatusUsuario.FOCO).idUsuario(usuarioFOCO).build();
+    }
+
+    public static Tarefa createTarefaPorIdUsuario(UUID idUsuario) {
+        return Tarefa.builder().contagemPomodoro(1).idTarefa(UUID.fromString("06fb5521-9d5a-461a-82fb-e67e3bedc6eb"))
+                .idUsuario(usuarioFOCO).descricao("descricao tarefa").statusAtivacao(StatusAtivacaoTarefa.INATIVA).build();
     }
 }
