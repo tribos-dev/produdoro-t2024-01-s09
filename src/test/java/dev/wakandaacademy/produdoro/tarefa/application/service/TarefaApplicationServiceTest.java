@@ -61,8 +61,8 @@ class TarefaApplicationServiceTest {
     @Test
     @DisplayName("Verifica se incrementou pomodoro")
     void incrementaPomodoroTest() {
-        Tarefa tarefa = DataHelper.createTarefa();
         Usuario usuario = DataHelper.createUsuarioFOCO();
+        Tarefa tarefa = DataHelper.createTarefaPorIdUsuario(usuario.getIdUsuario());
         int contagemPomodoroAntes = tarefa.getContagemPomodoro();
 
         when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
