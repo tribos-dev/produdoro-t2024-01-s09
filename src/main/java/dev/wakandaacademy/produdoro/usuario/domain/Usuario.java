@@ -67,7 +67,7 @@ public class Usuario {
 		log.info("[inicia] Usuario - validaUsuario");
 		if (!this.idUsuario.equals(idUsuario)) {
 			log.info("[finaliza] APIException - validaUsuario");
-			throw APIException.build(HttpStatus.BAD_REQUEST, "Usuário não encontrado.");
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "O usuário não é dono dessa credencial de autenticação.");
 		}
 		log.info("[finaliza] Usuario - validaUsuario");
 	}
