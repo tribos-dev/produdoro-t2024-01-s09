@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.validation.constraints.Email;
 
+import dev.wakandaacademy.produdoro.handler.APIException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.http.HttpStatus;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -41,4 +43,11 @@ public class Usuario {
 		this.status = StatusUsuario.FOCO;
 		this.configuracao = new ConfiguracaoUsuario(configuracaoPadrao);
 	}
+
+    public void emailDoUsuario(Usuario usuarioPorEmail) {
+		if (!this.getIdUsuario().equals(usuarioPorEmail.getIdUsuario())){
+			throw APIException.build(HttpStatus.UNAUTHORIZED,
+					"Usuario(a) não autorizado(a) para a requisição solicitada.");
+		}
+    }
 }
