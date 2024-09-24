@@ -1,5 +1,6 @@
 package dev.wakandaacademy.produdoro.tarefa.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/v1/tarefa")
 public interface TarefaAPI {
@@ -26,4 +28,9 @@ public interface TarefaAPI {
     TarefaDetalhadoResponse detalhaTarefa(@RequestHeader(name = "Authorization",required = true) String token, 
     		@PathVariable UUID idTarefa);
 
+    @GetMapping("/{idTarefa}")
+    @ResponseStatus(code = HttpStatus.OK)
+    List<TarefaListResponse> getTodasTarefasUsuario();
+    
+    
 }
