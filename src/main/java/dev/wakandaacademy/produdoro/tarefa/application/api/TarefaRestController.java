@@ -46,8 +46,9 @@ public class TarefaRestController implements TarefaAPI {
 	@Override
 	public List<TarefaListResponse> getTodasTarefasUsuario() {
 		log.info("[inicia] TarefaRestController - getTodasTarefasUsuario");
+		List<TarefaListResponse> tarefas = tarefaService.buscaTodasTarefasUsuario();
 		log.info("[finaliza] TarefaRestController - getTodasTarefasUsuario");
-		return null;
+		return tarefas;
 	}
 
 }
