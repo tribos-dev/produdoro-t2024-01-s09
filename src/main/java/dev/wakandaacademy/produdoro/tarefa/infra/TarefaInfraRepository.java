@@ -32,6 +32,7 @@ public class TarefaInfraRepository implements TarefaRepository {
         log.info("[finaliza] TarefaInfraRepository - salva");
         return tarefa;
     }
+
     @Override
     public Optional<Tarefa> buscaTarefaPorId(UUID idTarefa) {
         log.info("[inicia] TarefaInfraRepository - buscaTarefaPorId");
@@ -43,7 +44,10 @@ public class TarefaInfraRepository implements TarefaRepository {
     @Override
     public void ativaTarefaUsuario(Tarefa tarefa) {
         List<Tarefa> tarefas = tarefaSpringMongoDBRepository.findAllByIdUsuarioAndStatusAtivacao(tarefa.getIdUsuario(), StatusAtivacaoTarefa.ATIVA);
-        tarefas.stream().forEach(Tarefa::desativaTarefa);
+        tarefas.stream().forEach(tarefaDesativada -> {
+            tarefaDesativada.desativaTarefa();
+            salva(tarefaDesativada);
+        });
         tarefa.ativaTarefa();
     }
 }
