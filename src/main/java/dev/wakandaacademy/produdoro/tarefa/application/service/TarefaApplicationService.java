@@ -49,7 +49,7 @@ public class TarefaApplicationService implements TarefaService {
 		Usuario usuarioPorEmail = usuarioRepository.buscaUsuarioPorEmail(usuario);
 		usuarioRepository.buscaUsuarioPorId(idUsuario);
 		usuarioPorEmail.validaUsuario(idUsuario);
-		List<Tarefa> tarefas = tarefaRepository.buscaTodasTarefasUsuario(usuario, idUsuario);
+		List<Tarefa> tarefas = tarefaRepository.buscaTodasTarefasUsuario(idUsuario);
 		log.info("[finaliza] TarefaApplicationService - buscaTodasTarefasUsuario");
 		return TarefaListResponse.converte(tarefas);
 	}

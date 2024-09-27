@@ -10,5 +10,5 @@ public interface TarefaRepository {
 
     Tarefa salva(Tarefa tarefa);
     Optional<Tarefa> buscaTarefaPorId(UUID idTarefa);
-	List<Tarefa> buscaTodasTarefasUsuario(String usuario, UUID idUsuario);
+	List<Tarefa> buscaTodasTarefasUsuario(UUID idUsuario);
 }
