@@ -62,6 +62,7 @@ class TarefaApplicationServiceTest {
         tarefaApplicationService.ativaTarefa(usuario.getEmail(), tarefa.getIdTarefa());
         verify(tarefaRepository).ativaTarefaUsuario(tarefa);
         verify(tarefaRepository, times(1)).salva(tarefa);
+        
 
     }
 
