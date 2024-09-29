@@ -1,5 +1,6 @@
 package dev.wakandaacademy.produdoro.tarefa.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -50,4 +51,12 @@ public class TarefaRestController implements TarefaAPI {
 		return usuario;
 	}
 
+	@Override
+	public List<TarefaListResponse> getTodasTarefasUsuario(String token, UUID idUsuario) {
+		log.info("[inicia] TarefaRestController - getTodasTarefasUsuario");
+		String usuario = getUsuarioByToken(token);
+		List<TarefaListResponse> tarefas = tarefaService.buscaTodasTarefasUsuario(usuario, idUsuario);
+		log.info("[finaliza] TarefaRestController - getTodasTarefasUsuario");
+		return tarefas;
+	}
 }
