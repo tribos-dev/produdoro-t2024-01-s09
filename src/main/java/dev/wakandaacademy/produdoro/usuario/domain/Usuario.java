@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.produdoro.handler.APIException;
 import dev.wakandaacademy.produdoro.pomodoro.domain.ConfiguracaoPadrao;
@@ -49,7 +50,7 @@ public class Usuario {
     public void validaUsuario(UUID idUsuario) {
 		log.info("[inicia] Usuario - validaUsuario");
 		if (!this.idUsuario.equals(idUsuario)) {
-			throw APIException.build(HttpStatus.UNAUTHORIZED, "credencial de autenticação não é válida");
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Credencial de autenticação não é válida!");
 		}
 		log.info("[finaliza] Usuario - validaUsuario");
     }
