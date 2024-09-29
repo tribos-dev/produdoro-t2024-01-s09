@@ -46,4 +46,9 @@ public interface TarefaAPI {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     void editaTarefa(@RequestHeader(name = "Authorization", required = true) String token,
             @RequestBody @Valid TarefaEditaRequest tarefaEdita, @PathVariable UUID idTarefa);
+
+    @PostMapping("/muda-ordem/{idTarefa}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    void mudaOrdemDaTarefa(@RequestHeader(name = "Authorization") String token, @PathVariable UUID idTarefa,
+                           @RequestBody @Valid NovaPosicaoDaTarefaRequest novaPosicaoDaTarefaRequest);
 }
