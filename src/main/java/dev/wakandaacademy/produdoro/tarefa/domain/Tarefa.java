@@ -54,4 +54,9 @@ public class Tarefa {
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono da Tarefa solicitada!");
 		}
 	}
+
+    public void concluiTarefa() {
+		this.status = StatusTarefa.CONCLUIDA;
+    }
+
 }

@@ -54,4 +54,15 @@ public class TarefaApplicationService implements TarefaService {
 		return TarefaListResponse.converte(tarefas);
 	}
 
+
+
+    @Override
+    public void concluiTarefa(String usuario, UUID idTarefa) {
+        log.info("[inicia] TarefaApplicationService - concluiTarefa");
+        Tarefa tarefa = this.detalhaTarefa(usuario,idTarefa);
+        tarefa.concluiTarefa();
+        tarefaRepository.salva(tarefa);
+        log.info("[finaliza] TarefaApplicationService - concluiTarefa");
+    }
+
 }
