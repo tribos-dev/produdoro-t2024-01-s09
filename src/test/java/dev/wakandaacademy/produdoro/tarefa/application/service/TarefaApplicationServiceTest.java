@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,10 +15,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import dev.wakandaacademy.produdoro.DataHelper;
-import dev.wakandaacademy.produdoro.handler.APIException;
-import dev.wakandaacademy.produdoro.tarefa.domain.StatusTarefa;
 import dev.wakandaacademy.produdoro.usuario.application.repository.UsuarioRepository;
 import dev.wakandaacademy.produdoro.usuario.domain.Usuario;
+import dev.wakandaacademy.produdoro.handler.APIException;
+import dev.wakandaacademy.produdoro.tarefa.domain.StatusTarefa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,6 +59,16 @@ class TarefaApplicationServiceTest {
 		assertEquals(UUID.class, response.getIdTarefa().getClass());
 	}
 
+    @Test
+    void deveDeletarTodasTarefasDoUsuario() {
+        Usuario usuario = DataHelper.createUsuario();
+        List<Tarefa> tarefas = DataHelper.createListTarefa();
+        when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+        when(usuarioRepository.buscaUsuarioPorId(any())).thenReturn(usuario);
+        when(tarefaRepository.buscaTarefaPorUsuario(any())).thenReturn(tarefas);
+        tarefaApplicationService.deletaTodasTarefas(usuario.getEmail(), usuario.getIdUsuario());
+        verify(tarefaRepository, times(1)).deletaTodasTarefas(tarefas);
+    }
 
 	@Test
 	void deveListarTodasAsTarefas() {
@@ -67,7 +78,7 @@ class TarefaApplicationServiceTest {
 		// Quando
 		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
 		when(usuarioRepository.buscaUsuarioPorId(any())).thenReturn(usuario);
-		when(tarefaRepository.buscaTodasTarefasUsuario(any())).thenReturn(tarefas);
+		when(tarefaRepository.buscaTarefaPorUsuario(any())).thenReturn(tarefas);
 
 		List<TarefaListResponse> resultado = tarefaApplicationService.buscaTodasTarefasUsuario(usuario.getEmail(),
 				usuario.getIdUsuario());
@@ -75,7 +86,7 @@ class TarefaApplicationServiceTest {
 		// Então
 		verify(usuarioRepository, times(1)).buscaUsuarioPorEmail(usuario.getEmail());
 		verify(usuarioRepository, times(1)).buscaUsuarioPorId(usuario.getIdUsuario());
-		verify(tarefaRepository, times(1)).buscaTodasTarefasUsuario(usuario.getIdUsuario());
+		verify(tarefaRepository, times(1)).buscaTarefaPorUsuario(usuario.getIdUsuario());
 		assertEquals(resultado.size(), 8);
 	}
 

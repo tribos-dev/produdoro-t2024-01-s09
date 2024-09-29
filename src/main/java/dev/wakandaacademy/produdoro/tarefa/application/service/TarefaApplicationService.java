@@ -49,7 +49,7 @@ public class TarefaApplicationService implements TarefaService {
 		Usuario usuarioPorEmail = usuarioRepository.buscaUsuarioPorEmail(usuario);
 		usuarioRepository.buscaUsuarioPorId(idUsuario);
 		usuarioPorEmail.validaUsuario(idUsuario);
-		List<Tarefa> tarefas = tarefaRepository.buscaTodasTarefasUsuario(idUsuario);
+		List<Tarefa> tarefas = tarefaRepository.buscaTarefaPorUsuario(idUsuario);
 		log.info("[finaliza] TarefaApplicationService - buscaTodasTarefasUsuario");
 		return TarefaListResponse.converte(tarefas);
 	}
@@ -65,4 +65,19 @@ public class TarefaApplicationService implements TarefaService {
         log.info("[finaliza] TarefaApplicationService - concluiTarefa");
     }
 
+    @Override
+    public void deletaTodasTarefas(String emailUsuario, UUID idUsuario) {
+        log.info("[inicia] TarefaApplicationService - deletaTodasTarefas");
+        Usuario usuarioPorEmail = usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
+        log.info("[usuarioPorEmail] {}", usuarioPorEmail);
+        Usuario usuario = usuarioRepository.buscaUsuarioPorId((idUsuario));
+        usuario.emailDoUsuario(usuarioPorEmail);
+        List<Tarefa> tarefasUsario = tarefaRepository.buscaTarefaPorUsuario(usuario.getIdUsuario());
+        if (tarefasUsario.isEmpty()){
+            throw APIException.build(HttpStatus.BAD_REQUEST,"Usuário não possui tarefas(as) cadastrada(as)");
+        }
+        tarefaRepository.deletaTodasTarefas(tarefasUsario);
+        log.info("[final] TarefaApplicationService - deletaTodasTarefas");
+
+    }
 }

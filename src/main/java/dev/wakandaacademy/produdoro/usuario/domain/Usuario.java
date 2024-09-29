@@ -4,13 +4,13 @@ import java.util.UUID;
 
 import javax.validation.constraints.Email;
 
+import dev.wakandaacademy.produdoro.handler.APIException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
-import dev.wakandaacademy.produdoro.handler.APIException;
 import dev.wakandaacademy.produdoro.pomodoro.domain.ConfiguracaoPadrao;
 import dev.wakandaacademy.produdoro.usuario.application.api.UsuarioNovoRequest;
 import lombok.AccessLevel;
@@ -19,7 +19,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.http.HttpStatus;
 
 @Slf4j
 @Builder
@@ -47,6 +46,12 @@ public class Usuario {
 		this.configuracao = new ConfiguracaoUsuario(configuracaoPadrao);
 	}
 
+    public void emailDoUsuario(Usuario usuarioPorEmail) {
+		if (!this.getIdUsuario().equals(usuarioPorEmail.getIdUsuario())){
+			throw APIException.build(HttpStatus.UNAUTHORIZED,
+					"Usuario(a) não autorizado(a) para a requisição solicitada.");
+		}
+    }
     public void validaUsuario(UUID idUsuario) {
 		log.info("[inicia] Usuario - validaUsuario");
 		if (!this.idUsuario.equals(idUsuario)) {
