@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/v1/tarefa")
 public interface TarefaAPI {
@@ -20,20 +19,27 @@ public interface TarefaAPI {
     @GetMapping("/{idTarefa}")
     @ResponseStatus(code = HttpStatus.OK)
     TarefaDetalhadoResponse detalhaTarefa(@RequestHeader(name = "Authorization", required = true) String token,
-    		@PathVariable UUID idTarefa);
-    
+            @PathVariable UUID idTarefa);
+
     @GetMapping("/listar-tarefas/{idUsuario}")
     @ResponseStatus(code = HttpStatus.OK)
-    List<TarefaListResponse> getTodasTarefasUsuario(@RequestHeader(name = "Authorization",required = true) String token, 
-    		@PathVariable UUID idUsuario);
+    List<TarefaListResponse> getTodasTarefasUsuario(
+            @RequestHeader(name = "Authorization", required = true) String token,
+            @PathVariable UUID idUsuario);
 
     @GetMapping("/conclui-tarefa/{idTarefa}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     void concluiTarefa(@RequestHeader(name = "Authorization", required = true) String token,
-                       @PathVariable UUID idTarefa);
+            @PathVariable UUID idTarefa);
 
     @DeleteMapping("/usuario/{idUsuario}/limpar-todas-as-tarefas")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    void deletaTodasSuasTarefas(@RequestHeader(name ="Authorization",required = true)String token, @PathVariable UUID idUsuario);
+    void deletaTodasSuasTarefas(@RequestHeader(name = "Authorization", required = true) String token,
+            @PathVariable UUID idUsuario);
+
+    @PatchMapping("/edita-tarefa/{idTarefa}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    void editaTarefa(@RequestHeader(name = "Authorization", required = true) String token,
+            @RequestBody @Valid TarefaEditaRequest tarefaEdita, @PathVariable UUID idTarefa);
 
 }
