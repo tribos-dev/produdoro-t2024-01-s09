@@ -31,9 +31,17 @@ public class TarefaRestController implements TarefaAPI {
 	public TarefaDetalhadoResponse detalhaTarefa(String token, UUID idTarefa) {
 		log.info("[inicia] TarefaRestController - detalhaTarefa");
 		String usuario = getUsuarioByToken(token);
-		Tarefa tarefa = tarefaService.detalhaTarefa(usuario,idTarefa);
+		Tarefa tarefa = tarefaService.detalhaTarefa(usuario, idTarefa);
 		log.info("[finaliza] TarefaRestController - detalhaTarefa");
 		return new TarefaDetalhadoResponse(tarefa);
+	}
+
+	@Override
+	public void ativaTarefa(String token, UUID idTarefa) {
+		log.info("[inicia] TarefaRestController - ativaTarefa");
+		String usuarioEmail = getUsuarioByToken(token);
+		tarefaService.ativaTarefa(usuarioEmail, idTarefa);
+		log.info("[finaliza] TarefaRestController - ativaTarefa");
 	}
 
 	@Override
@@ -44,18 +52,19 @@ public class TarefaRestController implements TarefaAPI {
 		log.info("[finaliza] TarefaRestController - deletaTodasSuasTarefas");
 
 	}
-	
-    @Override
-    public void concluiTarefa(String token, UUID idTarefa) {
+
+	@Override
+	public void concluiTarefa(String token, UUID idTarefa) {
 		log.info("[inicia] TarefaRestController - concluiTarefa");
 		String usuario = this.getUsuarioByToken(token);
 		tarefaService.concluiTarefa(usuario, idTarefa);
 		log.info("[finaliza] TarefaRestController - concluiTarefa");
-    }
+	}
 
-    private String getUsuarioByToken(String token) {
+	private String getUsuarioByToken(String token) {
 		log.debug("[token] {}", token);
-		String usuario = tokenService.getUsuarioByBearerToken(token).orElseThrow(() -> APIException.build(HttpStatus.UNAUTHORIZED, token));
+		String usuario = tokenService.getUsuarioByBearerToken(token)
+				.orElseThrow(() -> APIException.build(HttpStatus.UNAUTHORIZED, token));
 		log.info("[usuario] {}", usuario);
 		return usuario;
 	}
@@ -64,7 +73,7 @@ public class TarefaRestController implements TarefaAPI {
 	public void editaTarefa(String token, TarefaEditaRequest tarefaEdita, UUID idTarefa) {
 		log.info("[inicia] TarefaRestController - editaTarefa");
 		String usuario = getUsuarioByToken(token);
-		tarefaService.editaTarefa(usuario,tarefaEdita,idTarefa);
+		tarefaService.editaTarefa(usuario, tarefaEdita, idTarefa);
 		log.info("[finaliza] TarefaRestController - editaTarefa");
 	}
 

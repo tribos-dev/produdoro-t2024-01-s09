@@ -50,6 +50,16 @@ public class Tarefa {
 		}
 	}
 
+	public void desativaTarefa() {
+		this.statusAtivacao = StatusAtivacaoTarefa.INATIVA;
+
+	}
+
+	public void ativaTarefa() {
+		this.statusAtivacao = StatusAtivacaoTarefa.ATIVA;
+
+	}
+
 	public void editaTarefa(TarefaEditaRequest tarefaEdita) {
 		this.descricao = tarefaEdita.getDescricao();
 	}
