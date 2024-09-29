@@ -37,7 +37,6 @@ class TarefaApplicationServiceTest {
     // @MockBean
     @Mock
     TarefaRepository tarefaRepository;
-
     @Mock
     UsuarioRepository usuarioRepository;
 
@@ -51,6 +50,17 @@ class TarefaApplicationServiceTest {
         assertNotNull(response);
         assertEquals(TarefaIdResponse.class, response.getClass());
         assertEquals(UUID.class, response.getIdTarefa().getClass());
+    }
+
+    @Test
+    void deveRetornarTarefaAtiva() {
+        Tarefa tarefa = DataHelper.createTarefa();
+        Usuario usuario = DataHelper.createUsuario();
+        when(usuarioRepository.buscaUsuarioPorEmail(usuario.getEmail())).thenReturn(usuario);
+        when(tarefaRepository.buscaTarefaPorId(tarefa.getIdTarefa())).thenReturn(Optional.of(tarefa));
+        tarefaApplicationService.ativaTarefa(usuario.getEmail(), tarefa.getIdTarefa());
+        verify(tarefaRepository).ativaTarefaUsuario(tarefa);
+        verify(tarefaRepository, times(1)).salva(tarefa);
     }
 
     @Test

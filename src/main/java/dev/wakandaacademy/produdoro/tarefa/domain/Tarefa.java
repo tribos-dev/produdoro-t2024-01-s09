@@ -80,10 +80,15 @@ public class Tarefa {
 		return ++contagemPomodoro;
 	}
 
-	private void ativaTarefa() {
+	public void ativaTarefa() {
 		if (this.statusAtivacao.equals(StatusAtivacaoTarefa.INATIVA)) {
 			this.statusAtivacao = StatusAtivacaoTarefa.ATIVA;
 		}
+	}
+
+	public void desativaTarefa() {
+		this.statusAtivacao = StatusAtivacaoTarefa.INATIVA;
+
 	}
 
 	public void editaTarefa(TarefaEditaRequest tarefaEdita) {
