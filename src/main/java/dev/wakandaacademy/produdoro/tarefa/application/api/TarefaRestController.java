@@ -1,5 +1,6 @@
 package dev.wakandaacademy.produdoro.tarefa.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -43,11 +44,43 @@ public class TarefaRestController implements TarefaAPI {
 		log.info("[finaliza] TarefaRestController - incrementaPomodoro");
 	}
 
-	private String getUsuarioByToken(String token) {
+	public void deletaTodasSuasTarefas(String token, UUID idUsuario) {
+		log.info("[inicia] TarefaRestController - deletaTodasSuasTarefas");
+		String emailUsuario = getUsuarioByToken(token);
+		tarefaService.deletaTodasTarefas(emailUsuario, idUsuario);
+		log.info("[finaliza] TarefaRestController - deletaTodasSuasTarefas");
+
+	}
+	
+    @Override
+    public void concluiTarefa(String token, UUID idTarefa) {
+		log.info("[inicia] TarefaRestController - concluiTarefa");
+		String usuario = this.getUsuarioByToken(token);
+		tarefaService.concluiTarefa(usuario, idTarefa);
+		log.info("[finaliza] TarefaRestController - concluiTarefa");
+    }
+
+    private String getUsuarioByToken(String token) {
 		log.debug("[token] {}", token);
 		String usuario = tokenService.getUsuarioByBearerToken(token).orElseThrow(() -> APIException.build(HttpStatus.UNAUTHORIZED, token));
 		log.info("[usuario] {}", usuario);
 		return usuario;
 	}
 
+	@Override
+	public void editaTarefa(String token, TarefaEditaRequest tarefaEdita, UUID idTarefa) {
+		log.info("[inicia] TarefaRestController - editaTarefa");
+		String usuario = getUsuarioByToken(token);
+		tarefaService.editaTarefa(usuario,tarefaEdita,idTarefa);
+		log.info("[finaliza] TarefaRestController - editaTarefa");
+	}
+
+	@Override
+	public List<TarefaListResponse> getTodasTarefasUsuario(String token, UUID idUsuario) {
+		log.info("[inicia] TarefaRestController - getTodasTarefasUsuario");
+		String usuario = getUsuarioByToken(token);
+		List<TarefaListResponse> tarefas = tarefaService.buscaTodasTarefasUsuario(usuario, idUsuario);
+		log.info("[finaliza] TarefaRestController - getTodasTarefasUsuario");
+		return tarefas;
+	}
 }
