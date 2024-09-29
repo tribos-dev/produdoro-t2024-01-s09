@@ -12,8 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -47,4 +48,28 @@ class UsuarioApplicationServiceTest {
         assertEquals("Usuário já esta em PAUSA LONGA", exception.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusException());
     }
+
+    @Test
+    void deveAlterarStatusParaPausaCurta(){
+
+        Usuario usuario = DataHelper.createUsuario();
+
+        when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+        when(usuarioRepository.buscaUsuarioPorId(any())).thenReturn(usuario);
+        usuarioApplicationService.mudaStatusParaPausaCurta(usuario.getEmail(), usuario.getIdUsuario());
+
+        verify(usuarioRepository, times(1)).salva(usuario);
+        assertEquals(StatusUsuario.PAUSA_CURTA, usuario.getStatus());
+    }
+
+    @Test
+    void naoDeveAlterarStatusParaPausaCurta() {
+
+        Usuario usuario = DataHelper.createUsuario();
+        UUID idUsuario = UUID.fromString("f81d4fae-7dec-4f34-a5e2-8c9559d13911");
+        when(usuarioRepository.buscaUsuarioPorEmail((anyString()))).thenReturn(usuario);
+        APIException e = assertThrows(APIException.class,
+                () -> usuarioApplicationService.mudaStatusParaPausaCurta(usuario.getEmail(), idUsuario));
+        assertEquals(HttpStatus.UNAUTHORIZED, e.getStatusException());
+        }
 }

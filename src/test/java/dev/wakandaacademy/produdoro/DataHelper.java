@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dev.wakandaacademy.produdoro.pomodoro.domain.ConfiguracaoPadrao;
+import dev.wakandaacademy.produdoro.tarefa.application.api.TarefaEditaRequest;
 import dev.wakandaacademy.produdoro.tarefa.application.api.TarefaRequest;
 import dev.wakandaacademy.produdoro.tarefa.domain.StatusAtivacaoTarefa;
 import dev.wakandaacademy.produdoro.tarefa.domain.Tarefa;
@@ -57,4 +58,10 @@ public class DataHelper {
 
         );
     }
+
+    public static TarefaEditaRequest getTarefaEditaRequest() {
+        TarefaEditaRequest tarefaEdita = new TarefaEditaRequest("Tarefa de teste");
+        return tarefaEdita;
+    }
+
 }

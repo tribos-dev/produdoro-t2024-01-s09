@@ -1,15 +1,14 @@
 package dev.wakandaacademy.produdoro.usuario.domain;
 
 import java.util.UUID;
-
 import javax.validation.constraints.Email;
-
 import dev.wakandaacademy.produdoro.handler.APIException;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.http.HttpStatus;
 import dev.wakandaacademy.produdoro.pomodoro.domain.ConfiguracaoPadrao;
 import dev.wakandaacademy.produdoro.usuario.application.api.UsuarioNovoRequest;
 import lombok.AccessLevel;
@@ -18,8 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.http.HttpStatus;
 
+@Slf4j
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -70,5 +69,22 @@ public class Usuario {
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "O usuário não é dono dessa credencial de autenticação.");
 		}
 		log.info("[finaliza] Usuario - validaUsuario");
+	}
+
+    public void emailDoUsuario(Usuario usuarioPorEmail) {
+		if (!this.getIdUsuario().equals(usuarioPorEmail.getIdUsuario())){
+			throw APIException.build(HttpStatus.UNAUTHORIZED,
+					"Usuario(a) não autorizado(a) para a requisição solicitada.");
+		}
+    }
+
+	public void mudaStatusPausaCurta() {
+		this.status = StatusUsuario.PAUSA_CURTA;
+	}
+
+	public void verificaPausaCurta() {
+		if (this.status.equals(StatusUsuario.PAUSA_CURTA)) {
+			throw  APIException.build(HttpStatus.BAD_REQUEST, "Usuário já esta em PAUSA CURTA!");
+		}
 	}
 }
