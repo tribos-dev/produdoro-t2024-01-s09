@@ -1,5 +1,12 @@
 package dev.wakandaacademy.produdoro.tarefa.application.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import dev.wakandaacademy.produdoro.DataHelper;
 import dev.wakandaacademy.produdoro.handler.APIException;
 import dev.wakandaacademy.produdoro.tarefa.application.api.TarefaEditaRequest;
@@ -18,15 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TarefaApplicationServiceTest {
@@ -114,6 +113,44 @@ class TarefaApplicationServiceTest {
     }
 
     @Test
+    @DisplayName("Verifica se incrementou pomodoro")
+    void incrementaPomodoroTest() {
+        Usuario usuario = DataHelper.createUsuarioFOCO();
+        Tarefa tarefa = DataHelper.createTarefaPorIdUsuario(usuario.getIdUsuario());
+        int contagemPomodoroAntes = tarefa.getContagemPomodoro();
+
+        when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+        when(tarefaRepository.buscaTarefaPorId(any())).thenReturn(Optional.of(tarefa));
+        tarefaApplicationService.incrementaPomodoro(usuario.getEmail(), tarefa.getIdTarefa());
+
+        int contagemPomodoroDepois = tarefa.getContagemPomodoro();
+        verify(tarefaRepository, times(1)).salva(any());
+        assertEquals(contagemPomodoroAntes + 1, contagemPomodoroDepois);
+    }
+
+    @Test
+    @DisplayName("incrementaPomodoro não encontra tarefa, NOT_FOUND")
+    void incrementaPomodoroJogaExceptionSeNaoEncontraTarefa() {
+        Usuario usuario = DataHelper.createUsuarioFOCO();
+        when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+        assertThrows(APIException.class, () -> tarefaApplicationService
+                .incrementaPomodoro(usuario.getEmail(), UUID.randomUUID()));
+    }
+
+    @Test
+    @DisplayName("incrementaPomodoro fornece token nao autorizado, UNAUTHORIZED")
+    void incrementaPomodoroJogaExceptionSeRetornaTokenNaoAutorizado() {
+        Usuario usuario = DataHelper.createUsuario();
+        Usuario usuario2 = DataHelper.createUsuarioFOCO();
+        Tarefa tarefa = DataHelper.createTarefaPorIdUsuario(usuario2.getIdUsuario());
+
+        when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+        when(tarefaRepository.buscaTarefaPorId(any())).thenReturn(Optional.of(tarefa));
+        assertThrows(APIException.class,
+                () -> tarefaApplicationService.incrementaPomodoro(usuario.getEmail(), tarefa.getIdTarefa()));
+    }
+
+    @Test
     @DisplayName("Deve editar a tarefa")
     void deveEditarTarefa() {
         // Dado
@@ -171,5 +208,4 @@ class TarefaApplicationServiceTest {
         assertThrows(APIException.class,
                 () -> tarefaApplicationService.concluiTarefa("emailqualquerum@hotmail.com", tarefa.getIdTarefa()));
     }
-
 }

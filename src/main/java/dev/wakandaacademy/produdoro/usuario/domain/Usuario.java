@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.validation.constraints.Email;
 
 import dev.wakandaacademy.produdoro.handler.APIException;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -27,6 +28,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Document(collection = "Usuario")
+@Log4j2
 public class Usuario {
 	@Id
 	private UUID idUsuario;
@@ -46,18 +48,42 @@ public class Usuario {
 		this.configuracao = new ConfiguracaoUsuario(configuracaoPadrao);
 	}
 
+	public void mudaStatusParaFoco(UUID idUsuario) {
+		log.info("[inicia] Usuario - mudaStatusParaFoco");
+		validaUsuario(idUsuario);
+		this.status = StatusUsuario.FOCO;
+		log.info("[finaliza] Usuario - mudaStatusParaFoco");
+	}
+
+	public void validaUsuario(UUID idUsuario) {
+		log.info("[inicia] Usuario - validaUsuario");
+		if (!this.idUsuario.equals(idUsuario)) {
+			log.info("[finaliza] APIException - validaUsuario");
+			throw APIException.build(HttpStatus.UNAUTHORIZED,"credencial de autenticação não é válida.");
+		}
+		log.info("[finaliza] Usuario - validaUsuario");
+
+	}
+
+	public void mudaStatusParaPausaLonga(UUID idUsuario) {
+		log.info("[inicia] Usuario - mudaStatusParaPausaLonga");
+		validaUsuario(idUsuario);
+		this.status = StatusUsuario.PAUSA_LONGA;
+		log.info("[finaliza] Usuario - mudaStatusParaPausaLonga");
+	}
+
+	public void mudaStatusParaPausaCurta(UUID idUsuario) {
+		log.info("[inicia] Usuario - mudaStatusParaPausaCurta");
+		validaUsuario(idUsuario);
+		this.status = StatusUsuario.PAUSA_CURTA;
+		log.info("[finaliza] Usuario - mudaStatusParaPausaCurta");
+	}
+
     public void emailDoUsuario(Usuario usuarioPorEmail) {
 		if (!this.getIdUsuario().equals(usuarioPorEmail.getIdUsuario())){
 			throw APIException.build(HttpStatus.UNAUTHORIZED,
 					"Usuario(a) não autorizado(a) para a requisição solicitada.");
 		}
-    }
-    public void validaUsuario(UUID idUsuario) {
-		log.info("[inicia] Usuario - validaUsuario");
-		if (!this.idUsuario.equals(idUsuario)) {
-			throw APIException.build(HttpStatus.UNAUTHORIZED, "Credencial de autenticação não é válida!");
-		}
-		log.info("[finaliza] Usuario - validaUsuario");
     }
 
 	public void mudaStatusPausaCurta() {

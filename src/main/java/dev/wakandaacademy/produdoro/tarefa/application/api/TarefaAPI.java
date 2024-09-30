@@ -46,4 +46,9 @@ public interface TarefaAPI {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     void editaTarefa(@RequestHeader(name = "Authorization", required = true) String token,
             @RequestBody @Valid TarefaEditaRequest tarefaEdita, @PathVariable UUID idTarefa);
+
+    @PostMapping("/incrementaPomodoro/{idTarefa}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    void incrementaPomodoro(@RequestHeader(name = "Authorization",required = true) String token,
+                            @PathVariable UUID idTarefa);
 }
