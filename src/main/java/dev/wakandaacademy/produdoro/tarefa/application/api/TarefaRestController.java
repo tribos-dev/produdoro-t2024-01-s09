@@ -2,10 +2,8 @@ package dev.wakandaacademy.produdoro.tarefa.application.api;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import dev.wakandaacademy.produdoro.config.security.service.TokenService;
 import dev.wakandaacademy.produdoro.handler.APIException;
 import dev.wakandaacademy.produdoro.tarefa.application.service.TarefaService;
@@ -37,6 +35,13 @@ public class TarefaRestController implements TarefaAPI {
 	}
 
 	@Override
+	public void incrementaPomodoro(String token, UUID idTarefa) {
+		log.info("[inicia] TarefaRestController - incrementaPomodoro");
+		String usuarioEmail = getUsuarioByToken(token);
+		tarefaService.incrementaPomodoro(usuarioEmail, idTarefa);
+		log.info("[finaliza] TarefaRestController - incrementaPomodoro");
+	}
+
 	public void ativaTarefa(String token, UUID idTarefa) {
 		log.info("[inicia] TarefaRestController - ativaTarefa");
 		String usuarioEmail = getUsuarioByToken(token);
