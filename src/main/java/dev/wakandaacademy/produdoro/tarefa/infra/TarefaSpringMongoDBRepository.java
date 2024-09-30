@@ -14,4 +14,6 @@ public interface TarefaSpringMongoDBRepository extends MongoRepository<Tarefa, U
     List<Tarefa> findAllByIdUsuarioAndStatusAtivacao(UUID idUsuario, StatusAtivacaoTarefa statusAtivacao);
 
     List<Tarefa> findAllByIdUsuario(UUID idUsuario);
+
+	int countByIdUsuario(UUID idUsuario);
 }

@@ -84,7 +84,7 @@ class TarefaApplicationServiceTest {
         when(usuarioRepository.buscaUsuarioPorId(any())).thenReturn(usuario);
         when(tarefaRepository.buscaTarefaPorUsuario(any())).thenReturn(tarefas);
 
-        List<TarefaListResponse> resultado = tarefaApplicationService.buscaTodasTarefasUsuario(usuario.getEmail(),
+        List<TarefaListResponse> resultado = tarefaApplicationService.buscaTarefasUsuario(usuario.getEmail(),
                 usuario.getIdUsuario());
 
         // Então
@@ -101,7 +101,7 @@ class TarefaApplicationServiceTest {
                 .thenThrow(APIException.build(HttpStatus.BAD_REQUEST, "Usuario não encontrado!"));
 
         APIException e = assertThrows(APIException.class, () -> tarefaApplicationService
-                .buscaTodasTarefasUsuario("emailinvalido@gmail.com", usuario.getIdUsuario()));
+                .buscaTarefasUsuario("emailinvalido@gmail.com", usuario.getIdUsuario()));
 
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatusException());
         assertEquals("Usuario não encontrado!", e.getMessage());
