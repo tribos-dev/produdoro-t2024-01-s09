@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dev.wakandaacademy.produdoro.pomodoro.domain.ConfiguracaoPadrao;
+import dev.wakandaacademy.produdoro.tarefa.application.api.TarefaEditaRequest;
 import dev.wakandaacademy.produdoro.tarefa.application.api.TarefaRequest;
 import dev.wakandaacademy.produdoro.tarefa.domain.StatusAtivacaoTarefa;
 import dev.wakandaacademy.produdoro.tarefa.domain.Tarefa;
@@ -14,6 +15,8 @@ import dev.wakandaacademy.produdoro.usuario.domain.Usuario;
 public class DataHelper {
 
     private static final UUID usuario1 = UUID.fromString("a713162f-20a9-4db9-a85b-90cd51ab18f4");
+
+    private static final UUID usuarioFOCO = UUID.fromString("a713162f-20a9-4db9-a85b-90cd51ab18f2");
 
     public static Usuario createUsuario() {
         return Usuario.builder().email("email@email.com").status(StatusUsuario.PAUSA_LONGA).idUsuario(usuario1).build();
@@ -53,4 +56,19 @@ public class DataHelper {
 
         );
     }
+
+    public static Usuario createUsuarioFOCO() {
+        return Usuario.builder().email("email@email.com").status(StatusUsuario.FOCO).idUsuario(usuarioFOCO).build();
+    }
+
+    public static Tarefa createTarefaPorIdUsuario(UUID idUsuario) {
+        return Tarefa.builder().contagemPomodoro(1).idTarefa(UUID.fromString("06fb5521-9d5a-461a-82fb-e67e3bedc6eb"))
+                .idUsuario(usuarioFOCO).descricao("descricao tarefa").statusAtivacao(StatusAtivacaoTarefa.INATIVA).build();
+    }
+
+    public static TarefaEditaRequest getTarefaEditaRequest() {
+        TarefaEditaRequest tarefaEdita = new TarefaEditaRequest("Tarefa de teste");
+        return tarefaEdita;
+    }
+
 }
