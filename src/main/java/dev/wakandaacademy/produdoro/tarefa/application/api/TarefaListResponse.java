@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import dev.wakandaacademy.produdoro.tarefa.domain.StatusTarefa;
 import dev.wakandaacademy.produdoro.tarefa.domain.Tarefa;
+import lombok.Getter;
 import lombok.Value;
 
 @Value
+@Getter
 public class TarefaListResponse {
 	private UUID idTarefa;
 	private String descricao;
@@ -16,6 +18,7 @@ public class TarefaListResponse {
 	private UUID idArea;
 	private UUID idProjeto;
 	private StatusTarefa status;
+	private int posicao;
 	
 	public static List<TarefaListResponse> converte(List<Tarefa> tarefas) {
 		return tarefas.stream()
@@ -30,5 +33,6 @@ public class TarefaListResponse {
 		this.idArea = tarefa.getIdArea();
 		this.idProjeto = tarefa.getIdProjeto();
 		this.status = tarefa.getStatus();
+		this.posicao = tarefa.getPosicao();
 	}
 }
