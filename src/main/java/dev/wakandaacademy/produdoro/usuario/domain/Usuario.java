@@ -46,6 +46,27 @@ public class Usuario {
 		this.configuracao = new ConfiguracaoUsuario(configuracaoPadrao);
 	}
 
+    public void mudaStatusParaFoco(UUID idUsuario) {
+		mudaParaFoco(idUsuario);
+    }
+
+	private void mudaParaFoco(UUID idUsuario) {
+		verificaStatusAtual();
+		validaUsuario(idUsuario);
+		this.status = StatusUsuario.FOCO;
+	}
+
+	private void verificaStatusAtual() {
+		if (this.status.equals(StatusUsuario.FOCO)) {
+			throw APIException.build(HttpStatus.BAD_REQUEST, "Usuario já está em FOCO!");
+
+		}
+	}
+
+	private void validaOUsuario(UUID idUsuario) {
+		if (!this.idUsuario.equals(idUsuario))
+            throw APIException.build(HttpStatus.UNAUTHORIZED, "Credencial de autenticação não é válida");
+	}
     public void emailDoUsuario(Usuario usuarioPorEmail) {
 		if (!this.getIdUsuario().equals(usuarioPorEmail.getIdUsuario())){
 			throw APIException.build(HttpStatus.UNAUTHORIZED,
@@ -60,13 +81,6 @@ public class Usuario {
 		log.info("[finaliza] Usuario - mudaStatusParaPausaCurta");
 	}
 
-
-	public void mudaStatusParaFoco(UUID idUsuario) {
-		log.info("[inicia] Usuario - mudaStatusParaFoco");
-		validaUsuario(idUsuario);
-		this.status = StatusUsuario.FOCO;
-		log.info("[finaliza] Usuario - mudaStatusParaFoco");
-	}
 
 	public void mudaStatusParaPausaLonga(UUID idUsuario) {
 		log.info("[inicia] Usuario - mudaStatusParaPausaLonga");
