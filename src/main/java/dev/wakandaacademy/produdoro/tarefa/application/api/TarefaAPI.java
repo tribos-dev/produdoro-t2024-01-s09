@@ -47,7 +47,7 @@ public interface TarefaAPI {
     		@PathVariable UUID idUsuario);
 
 
-    @GetMapping("/conclui-tarefa/{idTarefa}")
+    @PatchMapping("/conclui-tarefa/{idTarefa}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     void concluiTarefa(@RequestHeader(name = "Authorization", required = true) String token,
             @PathVariable UUID idTarefa);

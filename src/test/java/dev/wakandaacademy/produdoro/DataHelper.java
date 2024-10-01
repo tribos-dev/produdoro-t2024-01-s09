@@ -27,6 +27,9 @@ public class DataHelper {
 		return Tarefa.builder().contagemPomodoro(1).idTarefa(UUID.fromString("06fb5521-9d5a-461a-82fb-e67e3bedc6eb"))
 				.idUsuario(usuario1).descricao("descricao tarefa").statusAtivacao(StatusAtivacaoTarefa.INATIVA).build();
 	}
+    public static Usuario createUsuarioFOCO() {
+        return Usuario.builder().email("email@email.com").status(StatusUsuario.FOCO).idUsuario(usuarioFOCO).build();
+    }
 
 	public static UsuarioNovoRequest getUsuarioRequest() {
 		UsuarioNovoRequest userReq = new UsuarioNovoRequest("email@email.com", "12345");
@@ -58,15 +61,10 @@ public class DataHelper {
 		);
 	}
 
-	public static Usuario createUsuarioFOCO() {
-		return Usuario.builder().email("email@email.com").status(StatusUsuario.FOCO).idUsuario(usuarioFOCO).build();
-	}
-
-	public static Tarefa createTarefaPorIdUsuario(UUID idUsuario) {
-		return Tarefa.builder().contagemPomodoro(1).idTarefa(UUID.fromString("06fb5521-9d5a-461a-82fb-e67e3bedc6eb"))
-				.idUsuario(usuarioFOCO).descricao("descricao tarefa").statusAtivacao(StatusAtivacaoTarefa.INATIVA)
-				.build();
-	}
+    public static Tarefa createTarefaPorIdUsuario(UUID idUsuario) {
+        return Tarefa.builder().contagemPomodoro(1).idTarefa(UUID.fromString("06fb5521-9d5a-461a-82fb-e67e3bedc6eb"))
+                .idUsuario(usuarioFOCO).descricao("descricao tarefa").statusAtivacao(StatusAtivacaoTarefa.INATIVA).build();
+    }
 
 	public static TarefaEditaRequest getTarefaEditaRequest() {
 		TarefaEditaRequest tarefaEdita = new TarefaEditaRequest("Tarefa de teste");
