@@ -22,4 +22,14 @@ public interface UsuarioAPI {
 	@PatchMapping(value = "/foco/{idUsuario}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	void mudaStatusParaFoco(@RequestHeader(name ="Authorization" , required = true) String token, @PathVariable UUID idUsuario);
+	
+	@PatchMapping("/pausaLonga/{idUsuario}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	void mudaStatusParaPausaLonga(@RequestHeader(name = "Authorization", required = true) String token,
+								  @PathVariable UUID idUsuario);
+
+	@PatchMapping(value = "/pausa-curta/{idUsuario}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	void mudaStatusParaPausaCurta(@PathVariable UUID idUsuario,
+								  @RequestHeader(name = "Authorization", required = true) String token);
 }

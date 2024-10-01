@@ -55,5 +55,28 @@ public class UsuarioController implements UsuarioAPI {
 		log.info("[usuario] {}", usuario);
 		return usuario;
 	}
+	public void mudaStatusParaPausaLonga(String token, UUID idUsuario) {
+		log.info("[inicia] UsuarioController - mudaStatusParaPausaLonga");
+		String usuario = validaTokenUsuario(token);
+		usuarioAppplicationService.mudaStatusParaPausaLonga(usuario, idUsuario);
+		log.info("[finaliza] UsuarioController - mudaStatusParaPausaLonga");
+	}
+
+	private String validaTokenUsuario(String token) {
+		log.info("[inicia] UsuarioController - validaTokenUsuario");
+		String usuario = tokenService.getUsuarioByBearerToken(token).orElseThrow
+				(() -> APIException.build(HttpStatus.UNAUTHORIZED, "Credencial de autenticação não é válida"));
+		log.info("[finaliza] UsuarioController - validaTokenUsuario");
+		return usuario;
+	}
+
+	public void mudaStatusParaPausaCurta(UUID idUsuario, String token) {
+		log.info("[inicia] UsuarioController - mudaStatusParaPausaCurta");
+		log.info("[idUsuario] {}", idUsuario);
+			String usuario = tokenService.getUsuarioByBearerToken(token).orElseThrow(
+					() -> APIException.build(HttpStatus.UNAUTHORIZED, "credencial de autenticação não é válida"));
+			usuarioAppplicationService.mudaStatusParaPausaCurta(usuario, idUsuario);
+		log.info("[finaliza] UsuarioController - mudaStatusParaPausaCurta");
+	}
 }
 
